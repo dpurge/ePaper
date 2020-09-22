@@ -1,0 +1,85 @@
+{
+	"meta": {
+		"format":"lang-vocab-ind",
+		"created": "2018-11-15 22:45"
+	},
+	
+	"data": [
+		{
+			"phrase": "selamat malam",
+			"translation": "dobry wieczór"
+		},
+		{
+			"phrase": "nama",
+			"translation": "imię"
+		},
+		{
+			"phrase": "saya",
+			"translation": "ja"
+		},
+		{
+			"phrase": "orang",
+			"translation": "człowiek"
+		},
+		{
+			"phrase": "pegawai",
+			"translation": "pracownik"
+		},
+		{
+			"phrase": "maaf",
+			"translation": "przepraszam"
+		},
+		{
+			"phrase": "anda",
+			"translation": "ty"
+		},
+		{
+			"phrase": "siapa",
+			"translation": "kto"
+		},
+		{
+			"phrase": "toko",
+			"translation": "sklep"
+		},
+		{
+			"phrase": "pakaian",
+			"translation": "ubranie"
+		},
+		{
+			"phrase": "ini",
+			"translation": "ten"
+		},
+		{
+			"phrase": "isteri",
+			"translation": "żona"
+		},
+		{
+			"phrase": "sekretaris",
+			"translation": "sekretarka"
+		},
+		{
+			"phrase": "Inggeris",
+			"translation": "angielski"
+		},
+		{
+			"phrase": "dia",
+			"translation": "on"
+		},
+		{
+			"phrase": "di",
+			"translation": "w"
+		},
+		{
+			"phrase": "kantor",
+			"translation": "biuro"
+		},
+		{
+			"phrase": "bekerja",
+			"translation": "pracować"
+		},
+		{
+			"phrase": "dan",
+			"translation": "i; a"
+		}
+	]
+}

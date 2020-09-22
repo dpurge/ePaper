@@ -1,0 +1,19 @@
+{
+    "wlan": {
+        "essid": "??????",
+        "password": "******",
+        "timeout": 15
+    },
+    "display": {
+        "uartnr": 2,
+        "baudrate": 115200,
+        "tx": 17,
+        "rx": 16,
+        "wakeup": 22,
+        "reset": 21
+    },
+    "flashcards": {
+        "url": "https://89.70.246.4/epaper/",
+        "sleep": 1
+    }
+}

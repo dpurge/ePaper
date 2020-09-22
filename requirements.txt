@@ -1,0 +1,9 @@
+adafruit-ampy==1.0.7
+click==7.1.2
+ecdsa==0.16.0
+esptool==2.8
+freetype-py==2.2.0
+pyaes==1.6.1
+pyserial==3.4
+python-dotenv==0.14.0
+six==1.15.0
