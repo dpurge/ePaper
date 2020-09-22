@@ -34,24 +34,35 @@ def wlan_disconnect(timeout=15):
     wlan.active(False)
     return not wlan.isconnected()
 
-def get_json_from_url(url, essid, password, timeout=15):
-    json_data = None
-    try:
-        if (wlan_connect(essid, password, timeout)):
-            response = urequests.get(url)
-            if (response.status_code == 200):
-                json_data = response.json()
-    finally:
-        wlan_disconnect(timeout)
-    return json_data
+#def get_json_from_url(url, essid, password, timeout=15):
+#    json_data = None
+#    try:
+#        if (wlan_connect(essid, password, timeout)):
+#            response = urequests.get(url)
+#            if (response.status_code == 200):
+#                json_data = response.json()
+#    finally:
+#        wlan_disconnect(timeout)
+#    return json_data
+
+#def get_raw_from_url(url, essid, password, timeout=15):
+#    raw_data = None
+#    try:
+#        if (wlan_connect(essid, password, timeout)):
+#            response = urequests.get(url, stream = True)
+#            if (response.status_code == 200):
+#                raw_data = response.raw
+#    finally:
+#        wlan_disconnect(timeout)
+#    return raw_data
 
 # E X C E P T I O N S
 
-class WebException(Exception):
-    pass
+#class WebException(Exception):
+#    pass
 
 # E P A P E R  D E V I C E
-class Web(object):
+#class Web(object):
 
-    def __init__(self):
-	    pass
+#    def __init__(self):
+#        pass

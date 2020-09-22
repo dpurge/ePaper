@@ -2,6 +2,9 @@
 
 ## Setup
 
+ESP32 USB to UART drivers
+https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers
+
 ```powershell
 python -m venv .venv
 .venv\Scripts\activate.ps1

@@ -85,3 +85,24 @@ def show_flashcards(cards, config):
         epd.refresh()
     finally:
         epd.sleep()
+
+def show_png(image, config):
+    
+    epd = ePaper(
+        uartnr = config['uartnr'],
+        baudrate = config['baudrate'],
+        tx = config['tx'],
+        rx = config['rx'],
+        wakeup = config['wakeup'],
+        reset = config['reset'])
+        
+    try:
+        init_display(epd)
+        
+        # TODO
+        print('Processing: PNG')
+        epd.draw_png(x = (600 - 32) // 2, y = (800 - 32) // 2, image = image)
+            
+        epd.refresh()
+    finally:
+        epd.sleep()

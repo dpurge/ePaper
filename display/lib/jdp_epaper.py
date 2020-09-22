@@ -2,6 +2,7 @@ from micropython import const
 from machine import UART, Pin
 from ustruct import pack #, unpack
 from time import sleep_ms
+import png
 
 # C O N S T A N T S
 
@@ -83,6 +84,12 @@ class ePaper(object):
         self._uart = UART(uartnr, baudrate = baudrate, tx = tx, rx = rx)
         self._wakeup = Pin(wakeup, Pin.OUT)
         self._reset = Pin(reset, Pin.OUT)
+        
+        self.width = EPD_DISPLAY_WIDTH
+        self.height = EPD_DISPLAY_HEIGHT
+        
+        self.foreground_color = EPD_COLOR_BLACK
+        self.background_color = EPD_COLOR_WHITE
         
         #response = self._uart.read()
         #print("Init response: {}".format(response))
@@ -192,15 +199,29 @@ class ePaper(object):
     def set_color(self,
         foreground_color = EPD_COLOR_BLACK,
         background_color = EPD_COLOR_WHITE):
-        self._command(
-            command = EPD_CMD_SET_COLOR,
-            parameters = pack('!BB', foreground_color, background_color))
+        
+        if self.foreground_color != foreground_color or self.background_color != background_color:
+            self._command(
+                command = EPD_CMD_SET_COLOR,
+                parameters = pack('!BB', foreground_color, background_color))
+        
+        self.foreground_color = foreground_color
+        self.background_color = background_color
 
     def set_display_rotation(self,
         display_rotation = EPD_DISPLAY_ROTATION_NORMAL):
         self._command(
             command = EPD_CMD_SET_DISPLAY_ROTATION,
             parameters = pack('!B', display_rotation))
+        
+        if display_rotation in set([
+            EPD_DISPLAY_ROTATION_NORMAL,
+            EPD_DISPLAY_ROTATION_180]):
+            self.width = EPD_DISPLAY_WIDTH
+            self.height = EPD_DISPLAY_HEIGHT
+        else:
+            self.width = EPD_DISPLAY_HEIGHT
+            self.height = EPD_DISPLAY_WIDTH
 
     def set_storage_area(self,
         storage = EPD_STORAGE_NAND_FLASH):
@@ -217,6 +238,32 @@ class ePaper(object):
         self._command(
             command = EPD_CMD_DRAW_PIXEL,
             parameters = pack('!hh', x, y))
-            
-            
+
+    def draw_png(self, x, y, image, skip_color = None):
+    
+        img = png.Reader(file = image)
+        width, height, pixels, metadata = img.read()
+        
+        if not metadata['greyscale']:
+            raise ePaperException('Only greyscale PNG images are supported!')
+        
+        if metadata['alpha']:
+            raise ePaperException('PNG images with alpha channel are not supported!')
+        
+        if metadata['bitdepth'] > 2:
+            raise ePaperException('PNG images with bitdepth higher than 2 are not supported!')
+        
+        _y = 0
+        for pixrow in pixels:
+            _x = 0
+            if _y < self.height:
+                for pixel in pixrow:
+                    if _x < self.width:
+                        if pixel != skip_color:
+                            self.set_color(
+                                foreground_color = pixel,
+                                background_color = EPD_COLOR_WHITE)
+                            self.draw_pixel(_x + x, _y + y)
+                    _x += 1
+            _y += 1
             
