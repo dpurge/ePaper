@@ -1,7 +1,7 @@
 {
     "wlan": {
-        "essid": "??????",
-        "password": "******",
+        "essid": "---",
+        "password": "---",
         "timeout": 15
     },
     "display": {
@@ -12,8 +12,8 @@
         "wakeup": 22,
         "reset": 21
     },
-    "flashcards": {
-        "url": "https://89.70.246.4/epaper/",
+    "dashboard": {
+        "url": "http://192.168.0.2/ePaper/index.json",
         "sleep": 1
     }
 }

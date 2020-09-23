@@ -26,7 +26,9 @@ def init_display(display):
     display.set_color(EPD_COLOR_BLACK, EPD_COLOR_WHITE)
     display.clear()
 
-def render_footer(text, display, padding = 4, font_size = EPD_FONT_SIZE_32):
+def render_footer(timestamp, user, location, display, padding = 4, font_size = EPD_FONT_SIZE_32):
+
+    text = "{}    {}    {}".format(timestamp, user, location)
     
     if font_size == EPD_FONT_SIZE_64:
         text_heigt = 64
@@ -51,16 +53,6 @@ def render_footer(text, display, padding = 4, font_size = EPD_FONT_SIZE_32):
 
 def render_tile(column, row, image, display,
     padding = 4, footer_height = 32 + 2 * 4):
-    slot_width = (display.width - 3 * padding) // 2 # 294
-    slot_height = (display.height - footer_height - 9 * padding) // 8 # 90
-    
-    display.draw_png(
-        x = (slot_width + padding) * column + padding,
-        y = (slot_height + padding) * row + padding,
-        image = image,
-        skip_color = display.background_color)
-
-def show_dashboard(config, display_time=15):
     """
     Tiles are placed on a 2x8 grid.
     Display size = 600x800 pixels.
@@ -86,6 +78,22 @@ def show_dashboard(config, display_time=15):
         - alpha channel is not supported
         - bit depth must not be higher than 2
     """
+    slot_width = (display.width - 3 * padding) // 2 # 294
+    slot_height = (display.height - footer_height - 9 * padding) // 8 # 90
+    
+    display.draw_png(
+        x = (slot_width + padding) * column + padding,
+        y = (slot_height + padding) * row + padding,
+        image = image,
+        skip_color = display.background_color)
+
+# allow monkey patching
+mapping = {
+    'render_footer': (render_footer, {'display':None})
+}
+
+
+def show_dashboard(config, display_time=15):
     
     cfg = get_configuration(config)
     if cfg:
@@ -111,28 +119,19 @@ def show_dashboard(config, display_time=15):
                 if (response.status_code == 200):
                     dashboard = response.json()
                     response.close()
-                
-                if dashboard and dashboard['meta']['format'] == 'tile-png':
+
+                if dashboard and dashboard['meta']['format'] == 'dashboard':
                     init_display(display = epd)
-                    
-                    for tile in dashboard['data']:
-                        print(tile['x'], tile['y'], tile['image'])
-                        response = urequests.get(tile['image'], stream = True)
-                        if (response.status_code == 200):
-                            img = response.raw
-                            render_tile(
-                                row = tile['x'],
-                                column = tile['y'],
-                                image = img,
-                                display = epd)
-                            response.close()
-                    
-                    render_footer(
-                        text = "{}    {}    {}".format(
-                            dashboard['meta']['created'],
-                            dashboard['meta']['user'],
-                            dashboard['meta']['location']),
-                        display = epd)
+
+                    for command,parameters in dashboard['data']:
+                        cmd = mapping[command][0]
+                        params = mapping[command][1]
+                        if 'config' in params:
+                            params['config'] = cfg
+                        if 'display' in params:
+                            params['display'] = epd
+                        params.update(parameters)
+                        cmd(**params)
                     
                     epd.refresh()
         finally:

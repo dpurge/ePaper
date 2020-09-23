@@ -1,0 +1,8 @@
+{
+    "ampy.ampyPath": ".venv\\Scripts\\ampy.exe",
+    "python.pythonPath": ".venv\\Scripts\\python.exe",
+    "files.exclude": {
+        ".venv": true,
+        ".vscode": true
+    }
+}

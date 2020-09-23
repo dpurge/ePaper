@@ -5,6 +5,8 @@
 ESP32 USB to UART drivers
 https://www.silabs.com/products/development-tools/software/usb-to-uart-bridge-vcp-drivers
 
+To print ports used in windows: `chgport`
+
 ```powershell
 python -m venv .venv
 .venv\Scripts\activate.ps1
@@ -24,9 +26,10 @@ To update `requirements.txt`: `pip freeze > requirements.txt`
 
 ## API
 
-Run the server:
+Run the http server:
 
-D:\pgm\php\php.exe -S localhost
+php -S localhost
+python -m http.server 9000
 
 ## DISPLAY
 
